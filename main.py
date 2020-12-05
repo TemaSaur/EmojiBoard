@@ -1,7 +1,9 @@
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow
+from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow, QPushButton
 from PyQt5.QtGui import QIcon
+import emoji
+import pyperclip
 
 
 X_POS = 200
@@ -12,9 +14,23 @@ HEIGHT = 300
 NAME = "EmojiBoard;)"
 ICON_PLACE = "src/icon.png"
 
+emoji_ = emoji.emojize(":winking_face_with_tongue:")
+
+
+def add_to_clipboard(txt):
+	pyperclip.copy(txt)
+	print(f"copied {txt}")
+	return txt
+
+
+def copy():
+	add_to_clipboard(emoji_)
+	return emoji_
+
 
 # main function
 def main():
+
 	app = QApplication(sys.argv)
 
 	# set window
@@ -31,6 +47,12 @@ def main():
 	menu = QMenu()
 	exit_action = menu.addAction("Exit")
 	exit_action.triggered.connect(app.quit)
+
+	# copy button
+	button = QPushButton("copy", parent=window)
+	button.setToolTip("Copy")
+	button.clicked.connect(copy)
+	button.show()
 
 	tray_icon.setContextMenu(menu)
 

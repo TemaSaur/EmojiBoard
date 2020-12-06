@@ -1,3 +1,3 @@
-# emoji_keyboard
+# EmojiBoard;)
 
 On-screen keyboard for using emoji's

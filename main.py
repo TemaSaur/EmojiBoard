@@ -1,6 +1,7 @@
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow, QPushButton
+from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow,\
+	QPushButton, QScrollArea, QScrollBar
 from PyQt5.QtGui import QIcon
 import emojis
 import pyperclip
@@ -13,8 +14,10 @@ HEIGHT = 300
 
 NAME = "EmojiBoard;)"
 ICON_PLACE = "src/icon.png"
+EMOJIS = emojis.db.get_emoji_aliases()
 
-emoji_ = emojis.encode(":stuck_out_tongue_winking_eye:")
+# TEST
+# emoji_ = emojis.encode(":stuck_out_tongue_winking_eye:")
 
 
 def add_to_clipboard(txt):
@@ -23,9 +26,11 @@ def add_to_clipboard(txt):
 	return txt
 
 
-def copy():
-	add_to_clipboard(emoji_)
-	return emoji_
+# TEST
+# def copy():
+# 	add_to_clipboard(emoji_)
+# 	return emoji_
+
 
 
 # main function
@@ -48,11 +53,30 @@ def main():
 	exit_action = menu.addAction("Exit")
 	exit_action.triggered.connect(app.quit)
 
-	# copy button
-	button = QPushButton("copy", parent=window)
-	button.setToolTip("Copy")
-	button.clicked.connect(copy)
-	button.show()
+	# add scrollable part
+	scroll = QScrollArea(parent=window)
+	# scroll.setWidgetResizable(True)
+	scroll.setGeometry(10, 10, WIDTH-20, HEIGHT-20)
+	# scroll.setVerticalScrollBar(QScrollBar())
+	scroll.setVerticalScrollBarPolicy(True)
+
+	# the functionality
+	# TODO:
+	# make look ok
+	i = 0
+	emoji_buttons = []
+
+	for a, b in EMOJIS.items():
+		butt = QPushButton(b, parent=scroll)
+		butt.setGeometry(10, i*35, 30, 30)
+		butt.setToolTip(a)
+		butt.show()
+		emoji_buttons.append(butt)
+		i += 1
+
+	for butt in emoji_buttons:
+		butt.clicked.connect(lambda: add_to_clipboard(butt.text()))
+		# butt.clicked.connect(lambda: add_to_clipboard(b))
 
 	tray_icon.setContextMenu(menu)
 

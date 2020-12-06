@@ -2,7 +2,7 @@ import sys
 import os
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow, QPushButton
 from PyQt5.QtGui import QIcon
-import emoji
+import emojis
 import pyperclip
 
 
@@ -14,7 +14,7 @@ HEIGHT = 300
 NAME = "EmojiBoard;)"
 ICON_PLACE = "src/icon.png"
 
-emoji_ = emoji.emojize(":winking_face_with_tongue:")
+emoji_ = emojis.encode(":stuck_out_tongue_winking_eye:")
 
 
 def add_to_clipboard(txt):

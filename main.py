@@ -1,7 +1,6 @@
 import sys
-import os
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow, \
-	QPushButton, QScrollArea, QWidget, QGridLayout, QWidget, QSizePolicy
+	QPushButton, QScrollArea, QWidget, QGridLayout, QSizePolicy
 from PyQt5.QtGui import QIcon
 import emojis
 import pyperclip
@@ -15,7 +14,6 @@ NAME = "EmojiBoard;)"
 ICON_PLACE = "src/icon.png"
 EMOJIS = emojis.db.get_emoji_aliases()
 
-
 # TEST
 # emoji_ = emojis.encode(":stuck_out_tongue_winking_eye:")
 
@@ -24,12 +22,6 @@ def add_to_clipboard(txt):
 	pyperclip.copy(txt)
 	print(f"copied {txt}")
 	return txt
-
-
-# TEST
-# def copy():
-# 	add_to_clipboard(emoji_)
-# 	return emoji_
 
 
 # main function
@@ -51,35 +43,38 @@ def main():
 	exit_action = menu.addAction("Exit")
 	exit_action.triggered.connect(app.quit)
 
+	tray_icon.setContextMenu(menu)
+
 	# add scrollable part
 	scroll = QScrollArea(parent=window)
 	scroll.setGeometry(10, 10, WIDTH - 20, HEIGHT - 20)
 	scroll.setFixedWidth(WIDTH - 20)
 	scroll.setMinimumHeight(HEIGHT - 20)
 	scroll.setWidgetResizable(True)
-	# scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-	# doesn't work
 
+	# content for scrollable
 	scroll_contents = QWidget()
 	scroll_contents.setFixedWidth(WIDTH - 40)
 	scroll.setWidget(scroll_contents)
 
+	# using grid layout for scrollable
 	scroll_grid = QGridLayout()
 	scroll_grid.setHorizontalSpacing(4)
 	scroll_grid.setVerticalSpacing(10)
 	scroll_contents.setLayout(scroll_grid)
 
-	# scroll_grid.setColumnStretch(1, 4)
-	# scroll_grid.setColumnStretch(2, 4)
-
-	# the functionality
 	# TODO:
 	# make look ok
 	i = 0
 	emoji_buttons = []
 
+	# the functionality
+	# rn copies only the last emoji from the db
+	# TODO fix:)
 	for a, b in EMOJIS.items():
 		butt = QPushButton(b, parent=scroll_contents)
+		butt.setToolTip(a)
+
 		butt.setFixedWidth(36)
 		butt.setFixedHeight(36)
 
@@ -89,8 +84,6 @@ def main():
 		size_policy.setVerticalStretch(0)
 		butt.setSizePolicy(size_policy)
 
-		# (10, i*35, 30, 30)
-		butt.setToolTip(a)
 		scroll_grid.addWidget(butt, i // 8, i % 8)
 		emoji_buttons.append(butt)
 		butt.show()
@@ -98,10 +91,8 @@ def main():
 
 	for butt in emoji_buttons:
 		butt.clicked.connect(lambda: add_to_clipboard(butt.text()))
-	# butt.clicked.connect(lambda: add_to_clipboard(b))
 
-	tray_icon.setContextMenu(menu)
-
+	# showing stuff
 	tray_icon.show()
 	window.show()
 

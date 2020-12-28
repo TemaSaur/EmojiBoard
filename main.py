@@ -14,9 +14,6 @@ NAME = "EmojiBoard;)"
 ICON_PLACE = "src/icon.png"
 EMOJIS = emojis.db.get_emoji_aliases()
 
-# TEST
-# emoji_ = emojis.encode(":stuck_out_tongue_winking_eye:")
-
 
 def add_to_clipboard(txt):
 	pyperclip.copy(txt)
@@ -65,32 +62,30 @@ def main():
 
 	# TODO:
 	# make look ok
+
 	i = 0
 	emoji_buttons = []
 
 	# the functionality
-	# rn copies only the last emoji from the db
-	# TODO fix:)
+	# thanks stackoverflow
 	for a, b in EMOJIS.items():
-		butt = QPushButton(b, parent=scroll_contents)
-		butt.setToolTip(a)
+		btn = QPushButton(b, parent=scroll_contents)
+		btn.setToolTip(a)
 
-		butt.setFixedWidth(36)
-		butt.setFixedHeight(36)
+		btn.setFixedWidth(36)
+		btn.setFixedHeight(36)
+
+		btn.clicked.connect(lambda ch, txt=b: add_to_clipboard(txt))
 
 		size_policy = QSizePolicy(QSizePolicy.Maximum,
 				QSizePolicy.Fixed)
 		size_policy.setHorizontalStretch(0)
 		size_policy.setVerticalStretch(0)
-		butt.setSizePolicy(size_policy)
+		btn.setSizePolicy(size_policy)
 
-		scroll_grid.addWidget(butt, i // 8, i % 8)
-		emoji_buttons.append(butt)
-		butt.show()
+		scroll_grid.addWidget(btn, i // 8, i % 8)
+		emoji_buttons.append(btn)
 		i += 1
-
-	for butt in emoji_buttons:
-		butt.clicked.connect(lambda: add_to_clipboard(butt.text()))
 
 	# showing stuff
 	tray_icon.show()

@@ -1,7 +1,8 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow, \
 	QPushButton, QScrollArea, QWidget, QGridLayout, QSizePolicy
-from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon, QFont
 import emojis
 import pyperclip
 
@@ -13,6 +14,10 @@ HEIGHT = 300
 NAME = "EmojiBoard;)"
 ICON_PLACE = "src/icon.png"
 EMOJIS = emojis.db.get_emoji_aliases()
+
+with open("index.css", "r") as f:
+	styles = f.read()
+	f.close()
 
 
 def add_to_clipboard(txt):
@@ -26,7 +31,7 @@ def main():
 	app = QApplication(sys.argv)
 
 	# set window
-	window = QMainWindow()
+	window = QMainWindow(None, Qt.WindowStaysOnTopHint)
 	window.setGeometry(X_POS, Y_POS, WIDTH, HEIGHT)
 	window.setWindowTitle(NAME)
 	window.setWindowIcon(QIcon(ICON_PLACE))
@@ -64,16 +69,20 @@ def main():
 	# make look ok
 
 	i = 0
-	emoji_buttons = []
 
 	# the functionality
 	# thanks stackoverflow
+	font = QFont()
+	font.setFamily("Times")
+	font.setPixelSize(20)
 	for a, b in EMOJIS.items():
 		btn = QPushButton(b, parent=scroll_contents)
 		btn.setToolTip(a)
 
-		btn.setFixedWidth(36)
-		btn.setFixedHeight(36)
+		btn.setFont(font)
+		btn.setStyleSheet(styles)
+		btn.setFixedWidth(42)
+		btn.setFixedHeight(42)
 
 		btn.clicked.connect(lambda ch, txt=b: add_to_clipboard(txt))
 
@@ -83,8 +92,7 @@ def main():
 		size_policy.setVerticalStretch(0)
 		btn.setSizePolicy(size_policy)
 
-		scroll_grid.addWidget(btn, i // 8, i % 8)
-		emoji_buttons.append(btn)
+		scroll_grid.addWidget(btn, i // 6, i % 6)
 		i += 1
 
 	# showing stuff

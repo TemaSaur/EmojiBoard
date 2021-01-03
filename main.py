@@ -46,6 +46,7 @@ def main():
 	window.setWindowFlag(Qt.FramelessWindowHint)
 
 	# set title bar
+	# TODO: make movable
 	bar = QFrame(parent=window)
 	bar.setFixedSize(WIDTH, TITLE_BAR_HEIGHT)
 	label = QLabel("EmojiBoard;)", parent=bar)
@@ -84,9 +85,6 @@ def main():
 	scroll_grid.setHorizontalSpacing(4)
 	scroll_grid.setVerticalSpacing(10)
 	scroll_contents.setLayout(scroll_grid)
-
-	# TODO:
-	# make look ok
 
 	i = 0
 

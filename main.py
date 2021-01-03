@@ -6,17 +6,9 @@ from PyQt5.QtGui import QIcon, QFont
 from TitleBar import TitleBar
 import emojis
 import pyperclip
+from const import *
 
-X_POS = 200
-Y_POS = 200
-WIDTH = 400
-HEIGHT = 360
-TITLE_BAR_HEIGHT = 70
 
-CLOSE_BTN_SIZE = 16
-
-NAME = "EmojiBoard;)"
-ICON_PLACE = "src/icon.png"
 EMOJIS = emojis.db.get_emoji_aliases()
 
 with open("index.css", "r") as f:

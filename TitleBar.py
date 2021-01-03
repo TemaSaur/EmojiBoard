@@ -1,22 +1,11 @@
+from const import *
 import sys
-# from main import close_window, NAME, WIDTH, HEIGHT, TITLE_BAR_HEIGHT,\
-# 	CLOSE_BTN_SIZE
 from PyQt5.QtWidgets import QFrame, QPushButton, QLabel
 from PyQt5.QtCore import QPoint
 
 
 def close_window():
 	sys.exit()
-
-X_POS = 200
-Y_POS = 200
-WIDTH = 400
-HEIGHT = 360
-TITLE_BAR_HEIGHT = 70
-
-CLOSE_BTN_SIZE = 16
-
-NAME = "EmojiBoard;)"
 
 
 class TitleBar(QFrame):

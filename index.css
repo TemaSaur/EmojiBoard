@@ -1,6 +1,19 @@
-QPushButton {
-    background: #00000000;
+QMainWindow {
+    background: #434965;
 }
-QPushButton:hover {
-    background: #fff;
+
+QScrollArea QWidget {
+    background: #60688A;
+}
+
+QScrollArea {
+    border: none
+}
+
+QScrollArea QWidget QPushButton {
+    background: #20ffffff;
+}
+
+QScrollArea QWidget QPushButton:hover {
+    background: #50ffffff;
 }

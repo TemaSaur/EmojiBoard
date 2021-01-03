@@ -9,7 +9,7 @@ import pyperclip
 X_POS = 200
 Y_POS = 200
 WIDTH = 400
-HEIGHT = 300
+HEIGHT = 360
 
 NAME = "EmojiBoard;)"
 ICON_PLACE = "src/icon.png"
@@ -29,6 +29,7 @@ def add_to_clipboard(txt):
 # main function
 def main():
 	app = QApplication(sys.argv)
+	app.setStyleSheet(styles)
 
 	# set window
 	window = QMainWindow(None, Qt.WindowStaysOnTopHint)
@@ -49,9 +50,9 @@ def main():
 
 	# add scrollable part
 	scroll = QScrollArea(parent=window)
-	scroll.setGeometry(10, 10, WIDTH - 20, HEIGHT - 20)
+	scroll.setGeometry(10, 70, WIDTH - 20, HEIGHT - 80)
 	scroll.setFixedWidth(WIDTH - 20)
-	scroll.setMinimumHeight(HEIGHT - 20)
+	scroll.setMinimumHeight(HEIGHT - 80)
 	scroll.setWidgetResizable(True)
 
 	# content for scrollable
@@ -80,7 +81,6 @@ def main():
 		btn.setToolTip(a)
 
 		btn.setFont(font)
-		btn.setStyleSheet(styles)
 		btn.setFixedWidth(42)
 		btn.setFixedHeight(42)
 

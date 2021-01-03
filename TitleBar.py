@@ -1,7 +1,6 @@
 from const import *
 import sys
 from PyQt5.QtWidgets import QFrame, QPushButton, QLabel
-from PyQt5.QtCore import QPoint
 
 
 def close_window():
@@ -24,7 +23,7 @@ class TitleBar(QFrame):
 				CLOSE_BTN_SIZE, CLOSE_BTN_SIZE)
 		self.close.clicked.connect(close_window)
 
-	# github code
+	# stackoverflow code
 	def mousePressEvent(self, event):
 		self.start = self.mapToGlobal(event.pos())
 		self.pressing = True

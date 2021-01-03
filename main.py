@@ -47,18 +47,7 @@ def main():
 	window.setWindowFlag(Qt.FramelessWindowHint)
 
 	# set title bar
-	# TODO: make movable
-	# bar = QFrame(parent=window)
-	# bar.setFixedSize(WIDTH, TITLE_BAR_HEIGHT)
-	# label = QLabel("EmojiBoard;)", parent=bar)
-	# # the button now closes the app
-	# # in the future it is planned for it to go to the ~background mode~
-	# close = QPushButton("", parent=bar)
-	# close.setGeometry(WIDTH-20-CLOSE_BTN_SIZE, 20,
-	# 		CLOSE_BTN_SIZE, CLOSE_BTN_SIZE)
-	# close.clicked.connect(close_window)
 	bar = TitleBar(window)
-
 
 	# set tray icon
 	tray_icon = QSystemTrayIcon(QIcon(ICON_PLACE), parent=app)

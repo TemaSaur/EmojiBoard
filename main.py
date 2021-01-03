@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow, \
-	QPushButton, QScrollArea, QWidget, QGridLayout, QSizePolicy, QFrame, QLabel
+	QPushButton, QScrollArea, QWidget, QGridLayout, QSizePolicy
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QFont
 from TitleBar import TitleBar

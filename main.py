@@ -9,15 +9,11 @@ import pyperclip
 from const import *
 
 
-EMOJIS = emojis.db.get_emoji_aliases()
+emoji_db = emojis.db.get_emoji_aliases()
 
 with open("index.css", "r") as f:
 	styles = f.read()
 	f.close()
-
-
-def close_window():
-	sys.exit()
 
 
 def add_to_clipboard(txt):
@@ -52,9 +48,10 @@ def main():
 
 	tray_icon.setContextMenu(menu)
 
-	# add scrollable part
+	# add scrollable area
 	scroll = QScrollArea(parent=window)
-	scroll.setGeometry(10, TITLE_BAR_HEIGHT - 10, WIDTH - 20, HEIGHT - TITLE_BAR_HEIGHT)
+	scroll.setGeometry(10, TITLE_BAR_HEIGHT - 10,
+			WIDTH - 20, HEIGHT - TITLE_BAR_HEIGHT)
 	scroll.setFixedWidth(WIDTH - 20)
 	scroll.setMinimumHeight(HEIGHT - TITLE_BAR_HEIGHT)
 	scroll.setWidgetResizable(True)
@@ -77,15 +74,15 @@ def main():
 	font = QFont()
 	font.setFamily("Times")
 	font.setPixelSize(20)
-	for a, b in EMOJIS.items():
-		btn = QPushButton(b, parent=scroll_contents)
-		btn.setToolTip(a)
+	for emoji_name, value in emoji_db.items():
+		btn = QPushButton(value, parent=scroll_contents)
+		btn.setToolTip(emoji_name)
 
 		btn.setFont(font)
 		btn.setFixedWidth(42)
 		btn.setFixedHeight(42)
 
-		btn.clicked.connect(lambda ch, txt=b: add_to_clipboard(txt))
+		btn.clicked.connect(lambda ch, txt=value: add_to_clipboard(txt))
 
 		size_policy = QSizePolicy(QSizePolicy.Maximum,
 				QSizePolicy.Fixed)

@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow, \
-	QPushButton, QScrollArea, QWidget, QGridLayout, QSizePolicy
+	QPushButton, QScrollArea, QWidget, QGridLayout, QSizePolicy, QFrame, QLabel
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QFont
 import emojis
@@ -10,6 +10,9 @@ X_POS = 200
 Y_POS = 200
 WIDTH = 400
 HEIGHT = 360
+TITLE_BAR_HEIGHT = 70
+
+CLOSE_BTN_SIZE = 16
 
 NAME = "EmojiBoard;)"
 ICON_PLACE = "src/icon.png"
@@ -18,6 +21,10 @@ EMOJIS = emojis.db.get_emoji_aliases()
 with open("index.css", "r") as f:
 	styles = f.read()
 	f.close()
+
+
+def close_window():
+	sys.exit()
 
 
 def add_to_clipboard(txt):
@@ -36,6 +43,18 @@ def main():
 	window.setGeometry(X_POS, Y_POS, WIDTH, HEIGHT)
 	window.setWindowTitle(NAME)
 	window.setWindowIcon(QIcon(ICON_PLACE))
+	window.setWindowFlag(Qt.FramelessWindowHint)
+
+	# set title bar
+	bar = QFrame(parent=window)
+	bar.setFixedSize(WIDTH, TITLE_BAR_HEIGHT)
+	label = QLabel("EmojiBoard;)", parent=bar)
+	# the button now closes the app
+	# in the future it is planned for it to go to the ~background mode~
+	close = QPushButton("", parent=bar)
+	close.setGeometry(WIDTH-20-CLOSE_BTN_SIZE, 20,
+			CLOSE_BTN_SIZE, CLOSE_BTN_SIZE)
+	close.clicked.connect(close_window)
 
 	# set tray icon
 	tray_icon = QSystemTrayIcon(QIcon(ICON_PLACE), parent=app)
@@ -50,9 +69,9 @@ def main():
 
 	# add scrollable part
 	scroll = QScrollArea(parent=window)
-	scroll.setGeometry(10, 70, WIDTH - 20, HEIGHT - 80)
+	scroll.setGeometry(10, TITLE_BAR_HEIGHT - 10, WIDTH - 20, HEIGHT - TITLE_BAR_HEIGHT)
 	scroll.setFixedWidth(WIDTH - 20)
-	scroll.setMinimumHeight(HEIGHT - 80)
+	scroll.setMinimumHeight(HEIGHT - TITLE_BAR_HEIGHT)
 	scroll.setWidgetResizable(True)
 
 	# content for scrollable

@@ -2,6 +2,22 @@ QMainWindow {
     background: #434965;
 }
 
+QFrame QLabel {
+    font-family: "Segoe UI";
+    font-size: 20px;
+    color: #f8f8f8;
+    margin: 10px 0 0 10px;
+}
+
+QFrame QPushButton {
+    background: #c01010;
+    border-radius: 8px;
+}
+QFrame QPushButton:hover {
+    background: #921d1d;
+    border-radius: 8px;
+}
+
 QScrollArea QWidget {
     background: #60688A;
 }

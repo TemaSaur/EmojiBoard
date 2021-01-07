@@ -3,9 +3,9 @@ from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow, \
 	QPushButton, QScrollArea, QWidget, QGridLayout, QSizePolicy
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QFont
-from TitleBar import TitleBar
 import emojis
 import pyperclip
+from TitleBar import TitleBar
 from const import *
 
 
@@ -27,18 +27,19 @@ def main():
 	app = QApplication(sys.argv)
 	app.setStyleSheet(styles)
 
+	icon = QIcon(ICON_PLACE)
+
 	# set window
 	window = QMainWindow(None, Qt.WindowStaysOnTopHint)
 	window.setGeometry(X_POS, Y_POS, WIDTH, HEIGHT)
 	window.setWindowTitle(NAME)
-	window.setWindowIcon(QIcon(ICON_PLACE))
 	window.setWindowFlag(Qt.FramelessWindowHint)
 
 	# set title bar
 	bar = TitleBar(window)
 
 	# set tray icon
-	tray_icon = QSystemTrayIcon(QIcon(ICON_PLACE), parent=app)
+	tray_icon = QSystemTrayIcon(icon, parent=app)
 	tray_icon.setToolTip(NAME)
 
 	# set sys tray menu

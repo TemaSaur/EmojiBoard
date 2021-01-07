@@ -6,7 +6,8 @@ from PyQt5.QtGui import QIcon, QFont
 import emojis
 import pyperclip
 import ctypes
-from ctypes import wintypes
+import pygetwindow as gw
+import pyautogui
 from TitleBar import TitleBar
 from const import *
 
@@ -18,10 +19,33 @@ with open("index.css", "r") as f:
 	f.close()
 
 
+def get_clip():
+	return pyperclip.paste()
+
+
 def add_to_clipboard(txt):
 	pyperclip.copy(txt)
-	print(f"copied {txt}")
-	return txt
+
+
+def paste():
+	# i don't like using pyautogui here since it could be ~affected by already
+	# pressed keys
+	pyautogui.hotkey('ctrl', 'v')
+
+
+def activate():
+	active = [win for win in gw.getAllWindows() if win.title != ""][1]
+	active.activate()
+
+
+def insert(txt):
+	# to save original clipboard text i save it to a variable, then copy the
+	# emoji, paste it and copy the original clipboard
+	original = get_clip()
+	add_to_clipboard(txt)
+	activate()
+	paste()
+	add_to_clipboard(original)
 
 
 # main function
@@ -90,7 +114,8 @@ def main():
 		btn.setFixedWidth(42)
 		btn.setFixedHeight(42)
 
-		btn.clicked.connect(lambda ch, txt=value: add_to_clipboard(txt))
+		btn.clicked.connect(lambda ch, txt=value: insert(txt))
+		# btn.clicked.connect(lambda ch, txt=value: add_to_clipboard(txt))
 
 		size_policy = QSizePolicy(QSizePolicy.Maximum,
 				QSizePolicy.Fixed)

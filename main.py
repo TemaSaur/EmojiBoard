@@ -5,6 +5,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QFont
 import emojis
 import pyperclip
+import ctypes
+from ctypes import wintypes
 from TitleBar import TitleBar
 from const import *
 
@@ -33,7 +35,12 @@ def main():
 	window = QMainWindow(None, Qt.WindowStaysOnTopHint)
 	window.setGeometry(X_POS, Y_POS, WIDTH, HEIGHT)
 	window.setWindowTitle(NAME)
+	window.setWindowIcon(icon)
 	window.setWindowFlag(Qt.FramelessWindowHint)
+
+	if sys.platform == "win32":
+		id_ = u"TemaSaur.EmojiBoard"
+		ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(id_)
 
 	# set title bar
 	bar = TitleBar(window)

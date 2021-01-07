@@ -6,7 +6,7 @@ from PyQt5.QtGui import QIcon, QFont
 import emojis
 import pyperclip
 import ctypes
-import pygetwindow as gw
+import pygetwindow
 import pyautogui
 from TitleBar import TitleBar
 from const import *
@@ -20,35 +20,62 @@ with open("index.css", "r") as f:
 
 
 def get_clip():
+	"""
+	gets user's clipboard
+	"""
 	return pyperclip.paste()
 
 
 def add_to_clipboard(txt):
+	"""
+	puts [txt] to the user's clipboard
+
+	:param txt: Text to be copied
+	:return: [txt]
+	"""
 	pyperclip.copy(txt)
+
+	return txt
 
 
 def paste():
+	"""
+	pastes anything from the clipboard
+	"""
 	# i don't like using pyautogui here since it could be ~affected by already
 	# pressed keys
 	pyautogui.hotkey('ctrl', 'v')
 
 
 def activate():
-	active = [win for win in gw.getAllWindows() if win.title != ""][1]
+	"""
+	activates the window behind the EmojiBoard
+
+	:return: Active window's title
+	"""
+	active = [win for win in pygetwindow.getAllWindows() if win.title != ""][1]
 	active.activate()
+
+	return active.title
 
 
 def insert(txt):
-	# to save original clipboard text i save it to a variable, then copy the
-	# emoji, paste it and copy the original clipboard
+	"""
+	takes the user's original clipboard, changes it to the [txt], pastes it to
+	the active window and retrieves the original clipboard.
+
+	:param txt: Text to be copied/pasted
+	:return: Original text
+	"""
 	original = get_clip()
 	add_to_clipboard(txt)
 	activate()
 	paste()
 	add_to_clipboard(original)
 
+	return txt
 
-# main function
+
 def main():
 	app = QApplication(sys.argv)
 	app.setStyleSheet(styles)

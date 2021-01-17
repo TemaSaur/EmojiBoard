@@ -1,15 +1,18 @@
 from const import *
 import sys
 from PyQt5.QtWidgets import QFrame, QPushButton, QLabel
-
-
-def close_window():
-	sys.exit()
+from functions import *
 
 
 class TitleBar(QFrame):
 	def __init__(self, parent):
 		super(TitleBar, self).__init__(parent)
+
+		# pycharm please don't hurt me
+		self.start = None
+		self.pressing = None
+		self.end = None
+		self.movement = None
 
 		self.setFixedSize(WIDTH, TITLE_BAR_HEIGHT)
 

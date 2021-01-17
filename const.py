@@ -2,8 +2,6 @@
 module with constants for the EmojiBoard app
 ============================================
 
-it doesn't include the EMOJIS from the main.py since it's ~generated
-automatically~
 """
 
 

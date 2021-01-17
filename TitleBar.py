@@ -1,10 +1,7 @@
 from const import *
 import sys
 from PyQt5.QtWidgets import QFrame, QPushButton, QLabel
-
-
-def close_window():
-	sys.exit()
+from functions import *
 
 
 class TitleBar(QFrame):

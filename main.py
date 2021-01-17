@@ -1,13 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow, \
-	QPushButton, QScrollArea, QWidget, QGridLayout, QSizePolicy
+from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtGui import QIcon
 import emojis
-import pyperclip
 import ctypes
-import pygetwindow
-import pyautogui
 from TitleBar import TitleBar
 from EmojiGrid import EmojiGrid
 from const import *

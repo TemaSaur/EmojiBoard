@@ -1,61 +1,63 @@
-import sys
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QMainWindow
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-import emojis
-import ctypes
 from TitleBar import TitleBar
 from EmojiGrid import EmojiGrid
 from const import *
+from functions import *
 
-
-emoji_db = emojis.db.get_emoji_aliases()
 
 with open("index.css", "r") as f:
 	styles = f.read()
 	f.close()
 
 
-def main():
-	app = QApplication(sys.argv)
-	app.setStyleSheet(styles)
+class EmojiBoard(QMainWindow):
+	def __init__(self):
+		super(EmojiBoard, self).__init__(None, Qt.WindowStaysOnTopHint)
 
-	icon = QIcon(ICON_PLACE)
+		self.icon = QIcon(ICON_PLACE)
 
-	# set window
-	window = QMainWindow(None, Qt.WindowStaysOnTopHint)
-	window.setGeometry(X_POS, Y_POS, WIDTH, HEIGHT)
-	window.setWindowTitle(NAME)
-	window.setWindowIcon(icon)
-	window.setWindowFlag(Qt.FramelessWindowHint)
+		self.setGeometry(X_POS, Y_POS, WIDTH, HEIGHT)
+		self.setWindowTitle(NAME)
+		self.setWindowIcon(self.icon)
+		self.setWindowFlag(Qt.FramelessWindowHint)
 
-	if sys.platform == "win32":
-		id_ = u"TemaSaur.EmojiBoard"
-		ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(id_)
+		if sys.platform == "win32":
+			set_taskbar_icon()
 
-	# set title bar
-	bar = TitleBar(window)
+		self.populate()
 
-	# set tray icon
-	tray_icon = QSystemTrayIcon(icon, parent=app)
-	tray_icon.setToolTip(NAME)
+		self.tray_icon = None
+		self.set_tray()
 
-	# set sys tray menu
-	menu = QMenu()
-	exit_action = menu.addAction("Exit")
-	exit_action.triggered.connect(app.quit)
+		self.ready()
 
-	tray_icon.setContextMenu(menu)
+	def populate(self):
+		TitleBar(self)
+		EmojiGrid(self)
 
-	# add scrollable emojis block
-	emoji_grid = EmojiGrid(parent=window)
+	def set_tray(self):
+		self.tray_icon = QSystemTrayIcon(self.icon)
+		self.tray_icon.setToolTip(NAME)
 
-	# showing stuff
-	tray_icon.show()
-	window.show()
+		menu = QMenu()
+		exit_action = menu.addAction("Exit")
+		exit_action.triggered.connect(app.quit)
 
-	sys.exit(app.exec_())
+		self.tray_icon.setContextMenu(menu)
+
+	def ready(self):
+		self.tray_icon.show()
+		self.show()
 
 
 if __name__ == "__main__":
-	main()
+	import sys
+
+	app = QApplication(sys.argv)
+	app.setStyleSheet(styles)
+
+	EmojiBoard()
+
+	sys.exit(app.exec_())

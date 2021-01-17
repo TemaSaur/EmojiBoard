@@ -8,6 +8,7 @@ import pyperclip
 import pyautogui
 import pygetwindow
 import sys
+import ctypes
 
 
 def get_clip():
@@ -72,3 +73,11 @@ def close_window():
 	stops every process of app
 	"""
 	sys.exit()
+
+
+def set_taskbar_icon():
+	"""
+	sets taskbar icon for windows machines
+	"""
+	id_ = u"TemaSaur.EmojiBoard"
+	ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(id_)

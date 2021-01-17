@@ -1,3 +1,9 @@
+"""
+module with functions for the EmojiBoard app
+============================================
+
+"""
+
 import pyperclip
 import pyautogui
 import pygetwindow
@@ -47,7 +53,7 @@ def activate():
 def insert(txt):
 	"""
 	takes the user's original clipboard, changes it to the [txt], pastes it to
-	the active window and retrieves the original clipboard.
+	the active window and retrieves the original clipboard
 
 	:param txt: Text to be copied/pasted
 	:return: Original text
@@ -61,6 +67,8 @@ def insert(txt):
 	return txt
 
 
-# closing function
 def close_window():
+	"""
+	stops every process of app
+	"""
 	sys.exit()

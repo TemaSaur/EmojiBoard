@@ -3,7 +3,7 @@ QMainWindow {
 }
 
 QFrame QLabel {
-    font-family: "Segoe UI";
+    font-family: "Verdana", "Trebuchet MS", sans-serif;
     font-size: 20px;
     color: #f8f8f8;
     margin: 10px 0 0 10px;

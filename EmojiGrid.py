@@ -4,55 +4,71 @@ from PyQt5.QtWidgets import QScrollArea, QWidget, QGridLayout, QPushButton,\
 from PyQt5.QtGui import QFont
 import emojis
 from functions import *
+from const import EMOJI_BTN_SIZE
 
 
-emoji_db = emojis.db.get_emoji_aliases()
+def get_all_emojis():
+	db = emojis.db.get_emoji_aliases().items()
+	used_emojis = set()
+
+	index = 0
+	for emoji in db:
+		if emoji[1] not in used_emojis:
+			used_emojis.add(emoji[1])
+			yield emoji[0], emoji[1], index
+
+			index += 1
 
 
 class EmojiGrid(QScrollArea):
 	def __init__(self, parent):
 		super(EmojiGrid, self).__init__(parent)
+
+		self.setup_window()
+		self.setup_content()
+		self.setup_grid()
+
+		self.fill_grid()
+
+	def setup_window(self):
 		self.setGeometry(10, TITLE_BAR_HEIGHT - 10,
 				WIDTH - 20, HEIGHT - TITLE_BAR_HEIGHT)
 		self.setFixedWidth(WIDTH - 20)
 		self.setMinimumHeight(HEIGHT - TITLE_BAR_HEIGHT)
 		self.setWidgetResizable(True)
 
-		# the contents of scrollable
+	def setup_content(self):
 		self.contents = QWidget()
 		self.contents.setFixedWidth(WIDTH - 40)
 		self.setWidget(self.contents)
 
-		# the layout of contents
+	def setup_grid(self):
 		self.grid = QGridLayout()
 		self.grid.setHorizontalSpacing(4)
 		self.grid.setVerticalSpacing(10)
 		self.contents.setLayout(self.grid)
 
-		self.fill()
-
-	def fill(self):
+	def fill_grid(self):
 		font = QFont()
 		font.setFamily("Times")
 		font.setPixelSize(20)
 
-		i = 0
-		for emoji_name, value in emoji_db.items():
-			btn = QPushButton(value, parent=self.contents)
-			btn.setToolTip(emoji_name)
+		for emoji_name, emoji_value, i in get_all_emojis():
+			self.add_button(emoji_name, emoji_value, i, font)
 
-			btn.setFont(font)
-			btn.setFixedWidth(42)
-			btn.setFixedHeight(42)
+	def add_button(self, emoji_name, emoji_value, index, font):
+		btn = QPushButton(emoji_value, parent=self.contents)
+		btn.setToolTip(emoji_name)
 
-			btn.clicked.connect(lambda ch, txt=value: insert(txt))
-			# btn.clicked.connect(lambda ch, txt=value: add_to_clipboard(txt))
+		btn.setFont(font)
+		btn.setFixedWidth(EMOJI_BTN_SIZE)
+		btn.setFixedHeight(EMOJI_BTN_SIZE)
 
-			size_policy = QSizePolicy(QSizePolicy.Maximum,
-					QSizePolicy.Fixed)
-			size_policy.setHorizontalStretch(0)
-			size_policy.setVerticalStretch(0)
-			btn.setSizePolicy(size_policy)
+		btn.clicked.connect(lambda ch, txt=emoji_value: insert(txt))
 
-			self.grid.addWidget(btn, i // 6, i % 6)
-			i += 1
+		size_policy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
+		size_policy.setHorizontalStretch(0)
+		size_policy.setVerticalStretch(0)
+		btn.setSizePolicy(size_policy)
+
+		self.grid.addWidget(btn, index // 6, index % 6)

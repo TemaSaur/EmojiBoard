@@ -21,10 +21,27 @@ class TitleBar(QFrame):
 
 		self.label = QLabel(self.title, self)
 
-		self.close = QPushButton("", self)
-		self.close.setGeometry(WIDTH-20-CLOSE_BTN_SIZE, 20,
-				CLOSE_BTN_SIZE, CLOSE_BTN_SIZE)
-		self.close.clicked.connect(close_window)
+		self.add_toggle_btn()
+		self.add_close_btn()
+
+		# self.close = QPushButton("", self)
+		# self.close.setGeometry(WIDTH-20-CLOSE_BTN_SIZE, 20,
+		# 		CLOSE_BTN_SIZE, CLOSE_BTN_SIZE)
+		# self.close.clicked.connect(close_window)
+
+	def add_button(self, margin_right, name=""):
+		btn = QPushButton("", self)
+		btn.setProperty("name", name)
+		btn.setGeometry(WIDTH - margin_right, 20, TITLEBAR_BTN_SIZE, TITLEBAR_BTN_SIZE)
+		return btn
+
+	def add_toggle_btn(self):
+		toggle_btn = self.add_button(20 * 2 + TITLEBAR_BTN_SIZE + 5, "toggle")
+		toggle_btn.clicked.connect(self.parent.toggle_window)
+
+	def add_close_btn(self):
+		close_btn = self.add_button(20 + TITLEBAR_BTN_SIZE)
+		close_btn.clicked.connect(close_window)
 
 	# stackoverflow code
 	def mousePressEvent(self, event):
@@ -35,10 +52,11 @@ class TitleBar(QFrame):
 		if self.pressing:
 			self.end = self.mapToGlobal(event.pos())
 			self.movement = self.end - self.start
-			self.parent.setGeometry(self.mapToGlobal(self.movement).x(),
-					self.mapToGlobal(self.movement).y(),
-					self.parent.width(),
-					self.parent.height())
+			self.parent.setGeometry(
+				self.mapToGlobal(self.movement).x(),
+				self.mapToGlobal(self.movement).y(),
+				self.parent.width(),
+				self.parent.height())
 			self.start = self.end
 
 	def mouseReleaseEvent(self, QMouseEvent):

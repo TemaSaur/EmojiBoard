@@ -1,35 +1,41 @@
 QMainWindow {
-    background: #434965;
+	background: #434965;
 }
 
 QFrame QLabel {
-    font-family: "Verdana", "Trebuchet MS", sans-serif;
-    font-size: 20px;
-    color: #f8f8f8;
-    margin: 10px 0 0 10px;
+	font-family: "Verdana", "Trebuchet MS", sans-serif;
+	font-size: 20px;
+	color: #f8f8f8;
+	margin: 10px 0 0 10px;
 }
 
 QFrame QPushButton {
-    background: #c01010;
-    border-radius: 8px;
+	background: #c01010;
+	border-radius: 8px;
 }
-QFrame QPushButton:hover {
-    background: #921d1d;
-    border-radius: 8px;
+QFrame QPushButton#close_btn:hover {
+	background: #921d1d;
+	border-radius: 8px;
+}
+QFrame QPushButton[name="toggle"] {
+	background: #2091ce;
+}
+QFrame QPushButton[name="toggle"]:hover {
+	background: #1f5878;
 }
 
 QScrollArea QWidget {
-    background: #60688A;
+	background: #60688A;
 }
 
 QScrollArea {
-    border: none
+	border: none
 }
 
 QScrollArea QWidget QPushButton {
-    background: #20ffffff;
+	background: #20ffffff;
 }
 
 QScrollArea QWidget QPushButton:hover {
-    background: #50ffffff;
+	background: #50ffffff;
 }

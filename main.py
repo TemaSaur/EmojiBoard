@@ -14,14 +14,15 @@ with open("index.css", "r") as f:
 
 class EmojiBoard(QMainWindow):
 	def __init__(self):
-		super(EmojiBoard, self).__init__(None, Qt.WindowStaysOnTopHint)
+		super(EmojiBoard, self).__init__(None)
 
 		self.icon = QIcon(ICON_PLACE)
 
 		self.setGeometry(X_POS, Y_POS, WIDTH, HEIGHT)
 		self.setWindowTitle(NAME)
 		self.setWindowIcon(self.icon)
-		self.setWindowFlag(Qt.FramelessWindowHint)
+		self.staysOnTop = True
+		self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
 
 		if sys.platform == "win32":
 			set_taskbar_icon()
@@ -49,6 +50,11 @@ class EmojiBoard(QMainWindow):
 
 	def ready(self):
 		self.tray_icon.show()
+		self.show()
+
+	def toggle_window(self):
+		self.staysOnTop = not self.staysOnTop
+		self.setWindowFlag(Qt.WindowStaysOnTopHint, self.staysOnTop)
 		self.show()
 
 

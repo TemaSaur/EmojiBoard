@@ -9,6 +9,11 @@ import pyautogui
 import pygetwindow
 import sys
 import ctypes
+import json
+import const
+from PIL import Image, ImageDraw, ImageFont, ImageQt
+from PyQt5.QtWidgets import QWidget, QLabel
+from PyQt5.QtGui import QPixmap
 
 
 def get_clip():
@@ -81,3 +86,45 @@ def set_taskbar_icon():
 	"""
 	id_ = u"TemaSaur.EmojiBoard"
 	ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(id_)
+
+
+def get_all_emojis():
+	emojis = json.loads(open(const.EMOJI_JSON_PATH).read())
+
+	used = set()
+	bad = {'symbols', 'flags'}
+
+	index = 0
+	for emoji in filter(lambda e: e['group'] not in bad, emojis):
+		if emoji['character'] not in used:
+			yield emoji['slug'], emoji['character'], index
+			used.add(emoji['character'])
+			index += 1
+	return
+
+
+def create_image_from_character(char: str) -> Image:
+	size = 160
+	image = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+	draw = ImageDraw.Draw(image)
+
+	path = 'NotoColorEmoji.ttf'
+	size = 109
+	font = ImageFont.truetype(path, size)
+
+	pos = (16, 18)
+
+	draw.text(pos, char, font=font, embedded_color=True)
+
+	image = image.resize(
+		(const.EMOJI_SIZE, const.EMOJI_SIZE),
+		Image.ANTIALIAS)
+	return image
+
+
+def get_qt_image(char: str, element : QLabel) -> None:
+	image = create_image_from_character(char)
+
+	qt_image = ImageQt.ImageQt(image)
+	pixmap = QPixmap.fromImage(qt_image)
+	element.setPixmap(pixmap)

@@ -32,10 +32,11 @@ QScrollArea {
 	border: none
 }
 
-QScrollArea QWidget QPushButton {
+QScrollArea QWidget QLabel {
 	background: #20ffffff;
+	border-radius: 5px;
 }
 
-QScrollArea QWidget QPushButton:hover {
+QScrollArea QWidget QLabel:hover {
 	background: #50ffffff;
 }

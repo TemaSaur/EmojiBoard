@@ -1,23 +1,8 @@
 from const import *
 from PyQt5.QtWidgets import QScrollArea, QWidget, QGridLayout, QPushButton,\
 	QSizePolicy
-from PyQt5.QtGui import QFont
-import emojis
 from functions import *
 from const import EMOJI_BTN_SIZE
-
-
-def get_all_emojis():
-	db = emojis.db.get_emoji_aliases().items()
-	used_emojis = set()
-
-	index = 0
-	for emoji in db:
-		if emoji[1] not in used_emojis:
-			used_emojis.add(emoji[1])
-			yield emoji[0], emoji[1], index
-
-			index += 1
 
 
 class EmojiGrid(QScrollArea):
@@ -32,7 +17,7 @@ class EmojiGrid(QScrollArea):
 
 	def setup_window(self):
 		self.setGeometry(10, TITLE_BAR_HEIGHT - 10,
-				WIDTH - 20, HEIGHT - TITLE_BAR_HEIGHT)
+			WIDTH - 20, HEIGHT - TITLE_BAR_HEIGHT)
 		self.setFixedWidth(WIDTH - 20)
 		self.setMinimumHeight(HEIGHT - TITLE_BAR_HEIGHT)
 		self.setWidgetResizable(True)
@@ -45,30 +30,27 @@ class EmojiGrid(QScrollArea):
 	def setup_grid(self):
 		self.grid = QGridLayout()
 		self.grid.setHorizontalSpacing(4)
-		self.grid.setVerticalSpacing(10)
+		self.grid.setVerticalSpacing(8)
 		self.contents.setLayout(self.grid)
 
 	def fill_grid(self):
-		font = QFont()
-		font.setFamily("Times")
-		font.setPixelSize(20)
+		for emoji_name, emoji_value, index in get_all_emojis():
+			btn = Button(self.contents, emoji_name, emoji_value)
 
-		for emoji_name, emoji_value, i in get_all_emojis():
-			self.add_button(emoji_name, emoji_value, i, font)
+			self.grid.addWidget(btn, index // 6, index % 6)
 
-	def add_button(self, emoji_name, emoji_value, index, font):
-		btn = QPushButton(emoji_value, parent=self.contents)
-		btn.setToolTip(emoji_name)
 
-		btn.setFont(font)
-		btn.setFixedWidth(EMOJI_BTN_SIZE)
-		btn.setFixedHeight(EMOJI_BTN_SIZE)
+class Button(QLabel):
+	def __init__(self, parent: QWidget, emoji_name, emoji_value):
+		super(Button, self).__init__("", parent)
 
-		btn.clicked.connect(lambda ch, txt=emoji_value: insert(txt))
+		get_qt_image(emoji_value, self)
 
-		size_policy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-		size_policy.setHorizontalStretch(0)
-		size_policy.setVerticalStretch(0)
-		btn.setSizePolicy(size_policy)
+		## doesn't work
+		# self.setToolTip(emoji_name)
 
-		self.grid.addWidget(btn, index // 6, index % 6)
+		self.emoji_value = emoji_value
+		self.setProperty('name', 'emoji_btn')
+
+	def mousePressEvent(self, event):
+		insert(self.emoji_value)

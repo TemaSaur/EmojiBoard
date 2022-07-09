@@ -13,7 +13,7 @@ QFrame QPushButton {
 	background: #c01010;
 	border-radius: 8px;
 }
-QFrame QPushButton#close_btn:hover {
+QFrame QPushButton:hover {
 	background: #921d1d;
 	border-radius: 8px;
 }
@@ -21,7 +21,7 @@ QFrame QPushButton[name="toggle"] {
 	background: #2091ce;
 }
 QFrame QPushButton[name="toggle"]:hover {
-	background: #1f5878;
+	background: #256c94;
 }
 
 QScrollArea QWidget {

@@ -1,8 +1,7 @@
 from const import *
-from PyQt5.QtWidgets import QScrollArea, QWidget, QGridLayout, QPushButton,\
-	QSizePolicy
+from PyQt5.QtWidgets import QScrollArea, QGridLayout
 from functions import *
-from const import EMOJI_BTN_SIZE
+from EmojiButton import EmojiButton
 
 
 class EmojiGrid(QScrollArea):
@@ -10,7 +9,9 @@ class EmojiGrid(QScrollArea):
 		super(EmojiGrid, self).__init__(parent)
 
 		self.setup_window()
+		self.contents = QWidget()
 		self.setup_content()
+		self.grid = QGridLayout()
 		self.setup_grid()
 
 		self.fill_grid()
@@ -23,33 +24,16 @@ class EmojiGrid(QScrollArea):
 		self.setWidgetResizable(True)
 
 	def setup_content(self):
-		self.contents = QWidget()
 		self.contents.setFixedWidth(WIDTH - 40)
 		self.setWidget(self.contents)
 
 	def setup_grid(self):
-		self.grid = QGridLayout()
 		self.grid.setHorizontalSpacing(4)
 		self.grid.setVerticalSpacing(8)
 		self.contents.setLayout(self.grid)
 
 	def fill_grid(self):
 		for emoji_name, emoji_value, index in get_all_emojis():
-			btn = Button(self.contents, emoji_name, emoji_value)
+			btn = EmojiButton(self.contents, emoji_name, emoji_value)
 
 			self.grid.addWidget(btn, index // 6, index % 6)
-
-
-class Button(QLabel):
-	def __init__(self, parent: QWidget, emoji_name, emoji_value):
-		super(Button, self).__init__("", parent)
-
-		set_qt_image_by_name(emoji_name, self)
-
-		self.setToolTip(emoji_name)
-
-		self.emoji_value = emoji_value
-		self.setProperty('name', 'emoji_btn')
-
-	def mousePressEvent(self, event):
-		insert(self.emoji_value)

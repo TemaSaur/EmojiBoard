@@ -18,7 +18,7 @@ def progress(count, total):
 
 
 def save_image(img: Image, filename: str):
-	tokens = const.EMOJI_IMAGE_DIR_PATH + [f"{emoji_name}.png"]
+	tokens = const.EMOJI_IMAGE_DIR_PATH + [f"{filename}.png"]
 	path = os.path.join(*tokens)
 	img.save(path, 'PNG')
 

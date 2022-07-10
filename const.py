@@ -18,3 +18,5 @@ ICON_PLACE = "src/icon.png"
 
 EMOJI_JSON_PATH = "emojis.json"
 EMOJI_SIZE = 42
+
+EMOJI_IMAGE_DIR_PATH = ['src', 'emojis']

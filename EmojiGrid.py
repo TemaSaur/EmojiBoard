@@ -44,7 +44,7 @@ class Button(QLabel):
 	def __init__(self, parent: QWidget, emoji_name, emoji_value):
 		super(Button, self).__init__("", parent)
 
-		get_qt_image(emoji_value, self)
+		set_qt_image_by_name(emoji_name, self)
 
 		self.setToolTip(emoji_name)
 

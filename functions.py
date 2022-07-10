@@ -14,6 +14,9 @@ import const
 from PIL import Image, ImageDraw, ImageFont, ImageQt
 from PyQt5.QtWidgets import QWidget, QLabel
 from PyQt5.QtGui import QPixmap
+from pilmoji import Pilmoji
+from pilmoji.source import GoogleEmojiSource
+import os
 
 
 def get_clip():
@@ -95,7 +98,9 @@ def get_all_emojis():
 	bad = {'symbols', 'flags'}
 
 	index = 0
-	for emoji in filter(lambda e: e['group'] not in bad, emojis):
+	emojis = filter(lambda e: e['group'] not in bad and 'skin-tone' not in e['slug'], emojis)
+
+	for emoji in emojis:
 		if emoji['character'] not in used:
 			yield emoji['slug'], emoji['character'], index
 			used.add(emoji['character'])
@@ -105,16 +110,14 @@ def get_all_emojis():
 
 def create_image_from_character(char: str) -> Image:
 	size = 160
+
 	image = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-	draw = ImageDraw.Draw(image)
 
-	path = 'NotoColorEmoji.ttf'
-	size = 109
-	font = ImageFont.truetype(path, size)
+	font = ImageFont.truetype('arial.ttf', 109)
+	pos = (28, 27)
 
-	pos = (16, 18)
-
-	draw.text(pos, char, font=font, embedded_color=True)
+	with Pilmoji(image, source=GoogleEmojiSource) as pilmoji:
+		pilmoji.text(pos, char, (0, 0, 0), font)
 
 	image = image.resize(
 		(const.EMOJI_SIZE, const.EMOJI_SIZE),
@@ -122,9 +125,17 @@ def create_image_from_character(char: str) -> Image:
 	return image
 
 
-def get_qt_image(char: str, element : QLabel) -> None:
+def set_qt_image(char: str, element : QLabel) -> None:
 	image = create_image_from_character(char)
 
 	qt_image = ImageQt.ImageQt(image)
 	pixmap = QPixmap.fromImage(qt_image)
 	element.setPixmap(pixmap)
+
+
+def set_qt_image_by_name(name: str, element: QLabel) -> None:
+	tokens = const.EMOJI_IMAGE_DIR_PATH + [f"{name}.png"]
+	path = os.path.join(*tokens)
+	pixmap = QPixmap(path)
+	element.setPixmap(pixmap)
+

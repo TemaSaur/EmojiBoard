@@ -46,8 +46,7 @@ class Button(QLabel):
 
 		get_qt_image(emoji_value, self)
 
-		## doesn't work
-		# self.setToolTip(emoji_name)
+		self.setToolTip(emoji_name)
 
 		self.emoji_value = emoji_value
 		self.setProperty('name', 'emoji_btn')

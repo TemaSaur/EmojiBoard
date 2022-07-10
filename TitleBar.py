@@ -17,17 +17,12 @@ class TitleBar(QFrame):
 		self.setFixedSize(WIDTH, TITLE_BAR_HEIGHT)
 
 		self.parent = parent
-		self.title = NAME
 
-		self.label = QLabel(self.title, self)
+		label = QLabel(NAME, self)
+		label.move(0, 5)
 
 		self.add_toggle_btn()
 		self.add_close_btn()
-
-		# self.close = QPushButton("", self)
-		# self.close.setGeometry(WIDTH-20-CLOSE_BTN_SIZE, 20,
-		# 		CLOSE_BTN_SIZE, CLOSE_BTN_SIZE)
-		# self.close.clicked.connect(close_window)
 
 	def add_button(self, margin_right, name=""):
 		btn = QPushButton("", self)
@@ -59,7 +54,7 @@ class TitleBar(QFrame):
 				self.parent.height())
 			self.start = self.end
 
-	def mouseReleaseEvent(self, QMouseEvent):
+	def mouseReleaseEvent(self, event):
 		self.pressing = False
 
 	def btn_close_clicked(self):
